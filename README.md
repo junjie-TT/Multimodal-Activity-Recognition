@@ -84,8 +84,39 @@ notebooks. Keep notebooks lightweight and avoid embedding large outputs.
 
 ## Environment
 
-Several workflows assume a local Conda environment named `object_detection`.
-For example:
+Create the shared environment from the repository root:
+
+```bash
+conda env create -f environment.yml
+conda activate object_detection
+python -m pip check
+```
+
+`environment.yml` keeps the project dependencies and selected versions without
+local paths or platform-specific Conda build identifiers. Pip resolves supporting
+libraries, including the CUDA runtime required by PyTorch. It is a shared setup
+file, not an exact lockfile of the original machine.
+
+On Linux/Windows x86_64, the file preserves PyTorch 2.5.1 and torchvision 0.20.1
+with CUDA 12.1 using the official PyTorch wheel source. GPU use requires a
+compatible NVIDIA driver. On macOS, the file selects the standard PyTorch wheels;
+CUDA is unavailable. Other architectures may require different PyTorch versions
+and are not covered by this configuration.
+
+For a CPU-only Linux/Windows installation, replace `+cu121` with `+cpu` and
+`https://download.pytorch.org/whl/cu121` with
+`https://download.pytorch.org/whl/cpu` in a copy of the YAML before creating the
+environment. See the [official PyTorch 2.5.1 installation options](https://pytorch.org/get-started/previous-versions/#v251).
+The optional RAPIDS SVM backend (`--backend cuml`) needs a separate compatible
+RAPIDS installation; the default sklearn backend is included.
+
+Check the installation:
+
+```bash
+python -c "import cv2, h5py, numpy, pandas, pyarrow, sklearn, torch, torchvision, ultralytics; print('PyTorch:', torch.__version__, 'CUDA available:', torch.cuda.is_available())"
+```
+
+Several workflows use the environment name `object_detection`. For example:
 
 ```bash
 conda run --no-capture-output -n object_detection python -m lower_feature_cleaning_extraction.build_clean_manifest

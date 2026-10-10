@@ -1,0 +1,28 @@
+# Shared project dependencies; transitive dependencies are resolved at install time.
+name: object_detection
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # Preserve the original CUDA 12.1 builds on Linux/Windows x86_64.
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+      - "torch==2.5.1+cu121; (sys_platform == 'linux' or sys_platform == 'win32') and (platform_machine == 'AMD64' or platform_machine == 'x86_64')"
+      - "torchvision==0.20.1+cu121; (sys_platform == 'linux' or sys_platform == 'win32') and (platform_machine == 'AMD64' or platform_machine == 'x86_64')"
+      - "torch==2.5.1; sys_platform == 'darwin'"
+      - "torchvision==0.20.1; sys_platform == 'darwin'"
+      - numpy==2.2.6
+      - pandas==2.3.3
+      - scipy==1.15.3
+      - scikit-learn==1.7.2
+      - joblib==1.5.3
+      - h5py==3.16.0
+      - pyarrow>=18
+      - opencv-python>=4.13,<4.14
+      - matplotlib==3.10.9
+      - tqdm==4.68.3
+      - pyyaml==6.0.3
+      - ultralytics==8.4.72
+      - jupyter==1.1.1
+      - ipykernel==7.2.0
