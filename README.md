@@ -14,17 +14,14 @@ weights, and generated result folders should remain outside the repository.
 
 ```text
 .
-├── scripts/                         General dataset utilities
-├── feature_extraction/              Core multi-modal feature extraction package
 ├── lower_feature_cleaning_extraction/
 │                                      Lower-level cleaning, alignment, and sensor export
 ├── yolo_features_extraction/         YOLO object-detection feature extraction
 ├── upper_features_extraction/        Upper-level motion and interaction features
 ├── baseline_svm_current_action/      Baseline current-action modeling scripts
 ├── train/                           Unified training and evaluation workflows
-├── train_YOLO_hands/                YOLO hand-detection training utilities
+├── train_YOLO_hands/                 YOLO hand-detection training utilities
 ├── notebooks/                       Exploration, validation, and visualization notebooks
-├── reports/                         Lightweight analysis outputs and summaries
 └── README.md
 ```
 
@@ -34,8 +31,8 @@ The project currently supports the following workflow:
 
 ```text
 Aligned HDF5 recordings
-  -> dataset manifest construction
-  -> lower-level cleaning and sensor CSV export
+  -> clean recording manifest construction
+  -> sensor CSV export
   -> video-time alignment
   -> YOLO object and hand detection outputs
   -> upper-level motion and interaction features
@@ -46,16 +43,6 @@ The exact workflow depends on the experiment. The most commonly used entry
 points are documented in the README files inside each module.
 
 ## Key Components
-
-`scripts/`
-
-Contains shared utilities, including dataset manifest construction. The manifest
-serves as the recording index used by downstream feature extraction scripts.
-
-`feature_extraction/`
-
-Implements the core multi-modal feature extraction package for HDF5 recordings,
-including IMU, gaze, skeleton, metadata, and supporting utility functions.
 
 `lower_feature_cleaning_extraction/`
 
@@ -107,11 +94,11 @@ conda run --no-capture-output -n object_detection python -m lower_feature_cleani
 Some scripts may also run directly with Python:
 
 ```bash
-python -m feature_extraction.main
 python train/run_training_workflow.py --list
 ```
 
-Review each module README before running a workflow, because dataset paths and
+Run commands from the repository root. Review each module README before running
+a workflow, because dataset paths and
 output roots are intentionally local-machine specific.
 
 ## Data and Output Policy
@@ -149,23 +136,20 @@ large notebook outputs
 
 ## Common Commands
 
-Build a dataset manifest:
-
-```bash
-python scripts/build_manifest.py
-```
-
-Run the core feature extraction package:
-
-```bash
-python -m feature_extraction.main
-```
-
 Build the lower-feature clean manifest:
 
 ```bash
 conda run --no-capture-output -n object_detection python -m lower_feature_cleaning_extraction.build_clean_manifest
 ```
+
+Export clean sensor CSV files:
+
+```bash
+conda run --no-capture-output -n object_detection python -m lower_feature_cleaning_extraction.export_clean_sensor_csv
+```
+
+See [the lower-feature workflow](lower_feature_cleaning_extraction/README.md)
+for alignment and subsequent preprocessing steps.
 
 Run YOLO object detection:
 

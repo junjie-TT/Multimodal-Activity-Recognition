@@ -212,8 +212,7 @@ Run:
 conda run --no-capture-output -n object_detection python -m upper_features_extraction.imu_features.joint_kinematics --overwrite
 ```
 
-This extractor is independent from the older `feature_extraction/modalities/imu.py`
-implementation. It outputs one row per original IMU sensor sample using
+This extractor outputs one row per original IMU sensor sample using
 `time_s` and `frame_idx` at the Movella sampling rate, not `video_time_s` or
 `video_frame_idx`. It uses the previously inferred Movella DOT body mapping:
 
